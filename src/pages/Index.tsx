@@ -1,5 +1,100 @@
 import { useState } from "react";
 
+function BottleButton() {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href="https://t.me/BuhoyVL_bot"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Бутылка бесплатно при заказе тура!"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "fixed",
+        bottom: "28px",
+        right: "28px",
+        zIndex: 1000,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "8px",
+        textDecoration: "none",
+        filter: hovered ? "drop-shadow(0 0 18px rgba(37,99,235,0.7))" : "drop-shadow(0 4px 12px rgba(0,0,0,0.25))",
+        transform: hovered ? "scale(1.08) translateY(-4px)" : "scale(1)",
+        transition: "all 0.25s cubic-bezier(.34,1.56,.64,1)",
+      }}
+    >
+      {/* Пузырёк с текстом */}
+      <div
+        style={{
+          background: hovered ? "#1d4ed8" : "#2563eb",
+          color: "#fff",
+          fontSize: "11px",
+          fontWeight: 700,
+          fontFamily: "Inter, sans-serif",
+          textAlign: "center",
+          lineHeight: 1.3,
+          padding: "8px 12px",
+          borderRadius: "12px",
+          whiteSpace: "nowrap",
+          boxShadow: "0 2px 8px rgba(37,99,235,0.4)",
+          position: "relative",
+          transition: "background 0.2s",
+        }}
+      >
+        🍾 БУТЫЛКА БЕСПЛАТНО
+        <br />
+        <span style={{ fontWeight: 400, opacity: 0.9 }}>при заказе тура</span>
+        {/* Хвостик пузырька */}
+        <div style={{
+          position: "absolute",
+          bottom: "-7px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: 0,
+          height: 0,
+          borderLeft: "7px solid transparent",
+          borderRight: "7px solid transparent",
+          borderTop: `7px solid ${hovered ? "#1d4ed8" : "#2563eb"}`,
+          transition: "border-top-color 0.2s",
+        }} />
+      </div>
+
+      {/* SVG Бутылка */}
+      <svg
+        width="54"
+        height="110"
+        viewBox="0 0 54 110"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Горлышко */}
+        <rect x="19" y="0" width="16" height="6" rx="3" fill="#a3c4f3" />
+        <rect x="17" y="6" width="20" height="4" rx="2" fill="#93b4e8" />
+        {/* Переход */}
+        <path d="M17 10 Q8 24 8 34 L8 90 Q8 102 27 102 Q46 102 46 90 L46 34 Q46 24 37 10 Z" fill={hovered ? "#3b82f6" : "#2563eb"} style={{ transition: "fill 0.2s" }} />
+        {/* Блик */}
+        <path d="M15 30 Q11 40 11 55 L11 80" stroke="rgba(255,255,255,0.25)" strokeWidth="3" strokeLinecap="round" />
+        {/* Жидкость */}
+        <clipPath id="bottle-clip">
+          <path d="M17 10 Q8 24 8 34 L8 90 Q8 102 27 102 Q46 102 46 90 L46 34 Q46 24 37 10 Z" />
+        </clipPath>
+        <rect x="8" y="48" width="38" height="54" fill={hovered ? "#60a5fa" : "#3b82f6"} clipPath="url(#bottle-clip)" style={{ transition: "fill 0.2s" }} />
+        {/* Пузырьки в жидкости */}
+        <circle cx="20" cy="72" r="2.5" fill="rgba(255,255,255,0.3)" />
+        <circle cx="33" cy="85" r="1.8" fill="rgba(255,255,255,0.25)" />
+        <circle cx="26" cy="95" r="1.5" fill="rgba(255,255,255,0.2)" />
+        {/* Этикетка */}
+        <rect x="13" y="56" width="28" height="20" rx="4" fill="rgba(255,255,255,0.18)" />
+        <text x="27" y="68" textAnchor="middle" fill="white" fontSize="6" fontWeight="bold" fontFamily="Inter,sans-serif">TOUR</text>
+        {/* Дно */}
+        <ellipse cx="27" cy="101" rx="19" ry="4" fill="#1d4ed8" opacity="0.6" />
+      </svg>
+    </a>
+  );
+}
+
 const REVIEWS = [
   {
     initials: "АМ",
@@ -59,6 +154,7 @@ export default function Index() {
 
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
+      <BottleButton />
       {/* Navbar */}
       <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50 transition-all">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
