@@ -1,300 +1,325 @@
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 
-const IMG1 = "https://cdn.poehali.dev/projects/4a857690-a271-41da-9c2d-6bd6a05799d9/files/139bdf45-56c3-4601-804d-c32794defb14.jpg";
-const IMG2 = "https://cdn.poehali.dev/projects/4a857690-a271-41da-9c2d-6bd6a05799d9/files/4e76fd5c-4ade-4b79-8ea6-c610aaa9c75b.jpg";
-const IMG3 = "https://cdn.poehali.dev/projects/4a857690-a271-41da-9c2d-6bd6a05799d9/files/f6e3a84d-17b1-4bf6-b08a-0b08a83941ea.jpg";
-
-const MARQUEE_ITEMS = [
-  "Брендинг", "UI/UX Дизайн", "Веб-разработка", "Айдентика", "Анимация", "Стратегия",
-  "Брендинг", "UI/UX Дизайн", "Веб-разработка", "Айдентика", "Анимация", "Стратегия",
+const REVIEWS = [
+  {
+    initials: "АМ",
+    gradient: "from-blue-400 to-purple-500",
+    stars: 5,
+    text: "Впервые поехала одна на Дальний Восток. ИИ расписал каждый шаг, я сэкономила около 20 тысяч на экскурсиях! Очень круто, что маршрут легко подстраивается под погоду прямо в телефоне.",
+    name: "Анна М.",
+    sub: "Маршрут на 7 дней",
+  },
+  {
+    initials: "СВ",
+    gradient: "from-green-400 to-teal-500",
+    stars: 5,
+    text: "Купил гайд по гастротуру. Очень удобно, все точки кликабельны и сразу открываются в навигаторе Яндекс. Сэкономил кучу времени на поиске нормальных мест для ужина с женой.",
+    name: "Сергей В.",
+    sub: "Покупатель PDF-гайда",
+  },
 ];
 
-const SERVICES = [
-  { num: "01", icon: "✦", name: "Брендинг", desc: "Создаём идентичность, которая врезается в память. Логотипы, гайдлайны, айдентика — от идеи до финального руководства." },
-  { num: "02", icon: "◈", name: "Веб-дизайн", desc: "Сайты и интерфейсы с характером. Проектируем опыт, который конвертирует посетителей в клиентов." },
-  { num: "03", icon: "⬡", name: "Стратегия", desc: "Анализируем рынок и конкурентов, выстраиваем позиционирование, которое работает на долгосрочный результат." },
-  { num: "04", icon: "◎", name: "Анимация", desc: "Motion-дизайн и анимации для продуктов, соцсетей и презентаций. Ваш бренд оживает." },
-  { num: "05", icon: "▲", name: "Разработка", desc: "Фронтенд и веб-приложения на современных технологиях. Быстро, красиво, надёжно." },
-  { num: "06", icon: "◉", name: "Фото / Видео", desc: "Полный цикл визуального контента: концепция, съёмка, постпродакшн — для брендов и продуктов." },
-];
-
-const PORTFOLIO = [
-  { img: IMG1, tag: "Брендинг", title: "Lumex Studio" },
-  { img: IMG2, tag: "UI/UX", title: "Forma App" },
-  { img: IMG3, tag: "Айдентика", title: "Nord Agency" },
-  { img: IMG2, tag: "Веб-сайт", title: "Pulse Digital" },
+const GUIDES = [
+  {
+    img: "https://images.unsplash.com/photo-1590418389658-0051e5e542cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    badge: "5 дней",
+    tags: [
+      { label: "Природа", cls: "bg-blue-100 text-blue-800" },
+      { label: "Сложность: Средняя", cls: "bg-gray-100 text-gray-600" },
+    ],
+    title: "Морские волки: По диким бухтам Приморья",
+    desc: "Детальный план самостоятельной поездки. Включает сложную навигацию по бухтам, точный список снаряжения и проверенные точки аренды сапов и катеров.",
+    oldPrice: "2 000 ₽",
+    price: "990 ₽",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1582260656828-56ba361f67f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    badge: "Уикенд",
+    tags: [
+      { label: "Гастро", cls: "bg-orange-100 text-orange-800" },
+      { label: "Город", cls: "bg-purple-100 text-purple-800" },
+    ],
+    title: "Азиатский Владивосток: Гастротур",
+    desc: "Отдых со вкусом. Секретные чифаньки «для своих», лучшие рестораны с морепродуктами и видовые площадки, о которых не пишут в путеводителях.",
+    oldPrice: "1 000 ₽",
+    price: "500 ₽",
+  },
 ];
 
 export default function Index() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const cursorRingRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLElement>(null);
+  const [prompt, setPrompt] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    const cursor = cursorRef.current;
-    const ring = cursorRingRef.current;
-    if (!cursor || !ring) return;
-
-    let mx = 0, my = 0, rx = 0, ry = 0;
-
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      cursor.style.left = mx + "px";
-      cursor.style.top = my + "px";
-    };
-
-    const onHover = () => cursor.classList.add("hovering");
-    const onLeave = () => cursor.classList.remove("hovering");
-
-    let animId: number;
-    const raf = () => {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + "px";
-      ring.style.top = ry + "px";
-      animId = requestAnimationFrame(raf);
-    };
-
-    document.addEventListener("mousemove", onMove);
-    document.querySelectorAll("a, button, .service-item, .port-item").forEach((el) => {
-      el.addEventListener("mouseenter", onHover);
-      el.addEventListener("mouseleave", onLeave);
-    });
-
-    animId = requestAnimationFrame(raf);
-    return () => {
-      document.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  useEffect(() => {
-    const nav = navRef.current;
-    if (!nav) return;
-    const onScroll = () => {
-      if (window.scrollY > 50) nav.classList.add("scrolled");
-      else nav.classList.remove("scrolled");
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  const handleLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
   return (
-    <>
-      <div className="cursor" ref={cursorRef} />
-      <div className="cursor-ring" ref={cursorRingRef} />
-
+    <div className="font-sans text-gray-800 bg-gray-50">
       {/* Navbar */}
-      <nav className="navbar" ref={navRef}>
-        <div className="nav-logo">Kreativ</div>
-        <div className="nav-links">
-          {(["Главная", "О нас", "Услуги", "Портфолио", "Контакты"] as const).map((item, i) => (
-            <a key={i} className="nav-link" href={`#${["home","about","services","portfolio","contact"][i]}`}>
-              {item}
-            </a>
-          ))}
+      <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50 transition-all">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="text-2xl font-extrabold text-blue-600 tracking-tight">Хакни Маршрут</div>
+          <nav className="hidden md:flex space-x-8">
+            <a href="#hero-ai" className="hover:text-blue-600 font-medium transition">ИИ-Планировщик</a>
+            <a href="#how-it-works" className="hover:text-blue-600 font-medium transition">Как это работает</a>
+            <a href="#routes" className="hover:text-blue-600 font-medium transition">Гайды</a>
+            <a href="#social-proof" className="hover:text-blue-600 font-medium transition">Отзывы</a>
+          </nav>
+          <a
+            href="#lead-magnet"
+            className="bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Начать бесплатно
+          </a>
         </div>
-        <button className="btn-primary" style={{ fontSize: "0.75rem" }}>
-          <span>Связаться</span>
-        </button>
-      </nav>
+      </header>
 
       {/* Hero */}
-      <section className="hero" id="home">
-        <div className="hero-bg">
-          <div className="hero-grid" />
-          <div className="hero-glow" />
-        </div>
-        <div className="hero-number">07</div>
-        <div className="hero-content">
-          <p className="hero-eyebrow">Студия визуальных решений</p>
-          <h1 className="hero-title">
-            Мы делаем
-            <span>дерзкий</span>
-            дизайн
+      <section
+        id="hero-ai"
+        className="min-h-screen flex items-center pt-20"
+        style={{
+          background:
+            "linear-gradient(rgba(15,23,42,0.7),rgba(15,23,42,0.7)), url('https://images.unsplash.com/photo-1629163353347-7925c04b5003?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat",
+        }}
+      >
+        <div className="container mx-auto px-4 text-center text-white">
+          <span className="inline-block bg-blue-500/20 border border-blue-400/30 backdrop-blur-md text-blue-100 text-sm font-bold px-4 py-2 rounded-full uppercase tracking-wider mb-6">
+            🚀 Будущее самостоятельного туризма
+          </span>
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+            Спланируй идеальное<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+              путешествие за 2 минуты
+            </span>
           </h1>
-          <p className="hero-subtitle">
-            Создаём бренды, интерфейсы и digital-продукты, которые невозможно игнорировать.
+          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto opacity-90 drop-shadow-md">
+            Введи свои интересы, бюджет и даты — наша нейросеть соберет логичный маршрут, найдет билеты и подскажет секретные локации Приморья и мира.
           </p>
-          <div className="hero-cta">
-            <button className="btn-primary">
-              <span>Начать проект</span>
+
+          <div className="max-w-4xl mx-auto bg-white p-2.5 rounded-full flex flex-col md:flex-row shadow-2xl items-center focus-within:ring-4 focus-within:ring-blue-500/30 transition-all">
+            <div className="pl-6 text-2xl">✨</div>
+            <input
+              type="text"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Хочу на 3 дня во Владивосток, бюджет 50к, люблю морепродукты и маяки..."
+              className="flex-grow px-4 py-4 text-gray-800 bg-transparent focus:outline-none text-lg w-full placeholder-gray-400"
+            />
+            <button className="w-full md:w-auto bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition shadow-md whitespace-nowrap mt-2 md:mt-0">
+              Сгенерировать маршрут
             </button>
-            <button className="btn-outline">
-              Смотреть работы &nbsp;→
-            </button>
+          </div>
+
+          <div className="mt-8 text-sm opacity-70 flex flex-wrap justify-center gap-6">
+            <span>✓ Без регистрации</span>
+            <span>✓ 100% бесплатно для старта</span>
+            <span>✓ Интеграция с картами</span>
           </div>
         </div>
       </section>
 
-      {/* Marquee */}
-      <div className="marquee-wrap">
-        <div className="marquee-track">
-          {MARQUEE_ITEMS.map((item, i) => (
-            <div className="marquee-item" key={i}>
-              {item}
-              <span className="marquee-dot" />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* About */}
-      <section className="about-section" id="about">
-        <div className="section-label fade-up">О нас</div>
-        <h2 className="section-title fade-up fade-up-delay-1">
-          Мы — другие.<br />
-          <span style={{ color: "var(--gray)", fontWeight: 300 }}>И гордимся этим.</span>
-        </h2>
-        <div className="about-grid">
-          <div className="about-left">
-            <p className="about-text fade-up fade-up-delay-1">
-              <strong>Kreativ</strong> — студия визуальных решений, которая верит: <strong>дизайн должен продавать, вдохновлять и шокировать</strong> — одновременно. Мы не делаем «как у всех».
-            </p>
-            <p className="about-text fade-up fade-up-delay-2">
-              Наш подход — глубокое погружение в бизнес клиента, честный диалог и неудобные вопросы. Потому что красивая обёртка без стратегии внутри — это просто дорогой мусор.
-            </p>
-            <div className="about-stats fade-up fade-up-delay-3">
-              {([["120+", "проектов"], ["6", "лет опыта"], ["98%", "довольных"]] as const).map(([n, l]) => (
-                <div key={n}>
-                  <div className="stat-num">{n}</div>
-                  <div className="stat-label">{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="about-image fade-up fade-up-delay-2">
-            <img src={IMG3} alt="Команда Kreativ" />
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="services-section" id="services">
-        <div className="services-header">
-          <div>
-            <div className="section-label fade-up">Услуги</div>
-            <h2 className="section-title fade-up fade-up-delay-1">
-              Что мы<br />умеем
-            </h2>
-          </div>
-          <p className="fade-up" style={{ maxWidth: 320, color: "var(--gray)", fontSize: "0.9rem", lineHeight: 1.6 }}>
-            Полный спектр визуальных и digital-решений — от стратегии до воплощения.
+      {/* How it works */}
+      <section id="how-it-works" className="py-24 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-extrabold mb-4 text-gray-900">
+            Почему самостоятельный туризм — это просто?
+          </h2>
+          <p className="text-gray-500 mb-16 max-w-2xl mx-auto text-lg">
+            Забудьте про скучные пакетные туры. С нашим подходом вы сами контролируете каждую минуту своего времени.
           </p>
-        </div>
-        <div className="services-list">
-          {SERVICES.map((s, i) => (
-            <div className={`service-item fade-up fade-up-delay-${(i % 3) + 1}`} key={i}>
-              <div className="service-num">{s.num}</div>
-              <span className="service-icon">{s.icon}</span>
-              <div className="service-name">{s.name}</div>
-              <p className="service-desc">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Portfolio */}
-      <section className="portfolio-section" id="portfolio">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div>
-            <div className="section-label fade-up">Портфолио</div>
-            <h2 className="section-title fade-up fade-up-delay-1">
-              Избранные<br />работы
-            </h2>
-          </div>
-          <button className="btn-outline fade-up" style={{ paddingBottom: 0 }}>
-            Все проекты →
-          </button>
-        </div>
-        <div className="portfolio-grid">
-          {PORTFOLIO.map((p, i) => (
-            <div className={`port-item fade-up fade-up-delay-${(i % 3) + 1}`} key={i}>
-              <img src={p.img} alt={p.title} />
-              <div className="port-overlay">
-                <div className="port-meta">
-                  <span className="port-tag">{p.tag}</span>
-                  <div className="port-title">{p.title}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section className="contact-section" id="contact">
-        <div className="contact-inner">
-          <div className="contact-left">
-            <div className="section-label fade-up">Контакты</div>
-            <h2 className="contact-big fade-up fade-up-delay-1">
-              Есть<br />
-              <span>проект?</span><br />
-              Пиши.
-            </h2>
-            <div className="contact-info fade-up fade-up-delay-2">
-              {([
-                ["Телефон", "+7 (999) 000-00-00"],
-                ["Email", "hello@kreativ.ru"],
-                ["Адрес", "Москва, Россия"],
-              ] as const).map(([label, val]) => (
-                <div className="contact-info-item" key={label}>
-                  <span className="info-label">{label}</span>
-                  <span className="info-val">{val}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <form className="contact-form fade-up fade-up-delay-2" onSubmit={(e) => e.preventDefault()}>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { name: "name", label: "Ваше имя" },
-              { name: "company", label: "Компания" },
-              { name: "email", label: "Email" },
-            ].map((f) => (
-              <div className="form-group" key={f.name}>
-                <input type="text" className="form-input" placeholder=" " name={f.name} />
-                <label className="form-label">{f.label}</label>
+              {
+                icon: "🧠",
+                title: "Умная логистика",
+                desc: "ИИ учитывает реальное расписание транспорта и физически не предложит места, до которых невозможно добраться за один день.",
+              },
+              {
+                icon: "🗺️",
+                title: "Без банальщины",
+                desc: "Обходим стандартные туристические ловушки. Только по-настоящему интересные, скрытые локации от местных экспертов.",
+              },
+              {
+                icon: "💰",
+                title: "Прозрачный бюджет",
+                desc: "Точный расчет всех затрат до копейки: от такси до ужина в ресторане. Вы точно знаете, сколько потратите.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="p-8 rounded-3xl bg-gray-50 border border-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-2 group"
+              >
+                <div className="w-20 h-20 bg-white rounded-2xl shadow-sm flex items-center justify-center text-4xl mx-auto mb-6 group-hover:scale-110 transition">
+                  {item.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
               </div>
             ))}
-            <div className="form-group">
-              <textarea className="form-input" placeholder=" " rows={3} style={{ resize: "none" }} />
-              <label className="form-label">Расскажите о проекте</label>
+          </div>
+        </div>
+      </section>
+
+      {/* Routes / Guides */}
+      <section id="routes" className="py-24 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Эксклюзив</span>
+          <h2 className="text-4xl font-extrabold mb-4 text-gray-900">Или выбери готовые авторские гайды</h2>
+          <p className="text-gray-600 mb-16 max-w-2xl mx-auto text-lg">
+            Пошаговые PDF-инструкции с интерактивными картами и лайфхаками от создателей школы «Хакни Нейросети».
+          </p>
+          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto text-left">
+            {GUIDES.map((g) => (
+              <div
+                key={g.title}
+                className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col"
+              >
+                <div className="relative h-72">
+                  <img src={g.img} alt={g.title} className="w-full h-full object-cover" />
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg font-bold text-gray-900 shadow-sm">
+                    {g.badge}
+                  </div>
+                </div>
+                <div className="p-8 flex-grow flex flex-col">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {g.tags.map((t) => (
+                      <span key={t.label} className={`text-xs font-bold px-3 py-1 rounded-full uppercase ${t.cls}`}>
+                        {t.label}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900">{g.title}</h3>
+                  <p className="text-gray-600 mb-8 flex-grow">{g.desc}</p>
+                  <div className="flex justify-between items-center pt-6 border-t border-gray-100 mt-auto">
+                    <div className="flex flex-col">
+                      <span className="text-gray-400 line-through text-sm">{g.oldPrice}</span>
+                      <span className="text-3xl font-extrabold text-gray-900">{g.price}</span>
+                    </div>
+                    <button className="bg-gray-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-600 transition shadow-md">
+                      Купить гайд
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section id="social-proof" className="py-24 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-extrabold mb-16 text-gray-900">Уже путешествуют с нами</h2>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto text-left">
+            {REVIEWS.map((r) => (
+              <div
+                key={r.name}
+                className="p-8 border border-gray-100 rounded-3xl shadow-sm bg-gray-50 relative"
+              >
+                <div className="absolute top-6 right-8 text-6xl text-gray-200 font-serif opacity-50">"</div>
+                <div className="text-yellow-400 mb-4 text-xl tracking-widest">
+                  {"★".repeat(r.stars)}
+                </div>
+                <p className="text-gray-700 italic mb-8 text-lg relative z-10">{r.text}</p>
+                <div className="flex items-center">
+                  <div
+                    className={`w-14 h-14 bg-gradient-to-br ${r.gradient} rounded-full mr-4 flex items-center justify-center text-white font-bold text-xl shadow-inner`}
+                  >
+                    {r.initials}
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 text-lg">{r.name}</div>
+                    <div className="text-gray-500 text-sm">{r.sub}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lead Magnet */}
+      <section id="lead-magnet" className="py-24 bg-blue-600 text-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform translate-x-1/2 translate-y-1/2" />
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Сомневаетесь, куда поехать?</h2>
+          <p className="mb-12 max-w-2xl mx-auto text-xl opacity-90 leading-relaxed">
+            Оставьте email, и мы пришлем бесплатный PDF-чек-лист<br />
+            <span className="font-bold bg-white/20 px-2 py-1 rounded">
+              «Топ-10 ошибок самостоятельного туриста в 2026 году»
+            </span>
+          </p>
+
+          {submitted ? (
+            <div className="max-w-md mx-auto bg-white p-10 rounded-3xl shadow-2xl text-center">
+              <div className="text-5xl mb-4">🎉</div>
+              <h3 className="text-2xl font-extrabold text-gray-900 mb-2">Готово!</h3>
+              <p className="text-gray-600">Мы отправим чек-лист на ваш email в течение нескольких минут.</p>
             </div>
-            <button type="submit" className="form-submit">
-              Отправить заявку
-            </button>
-          </form>
+          ) : (
+            <form
+              className="max-w-md mx-auto flex flex-col space-y-4 bg-white p-10 rounded-3xl shadow-2xl"
+              onSubmit={handleLeadSubmit}
+            >
+              <div className="text-left">
+                <label className="text-gray-700 text-sm font-bold mb-2 block">Ваше имя</label>
+                <input
+                  type="text"
+                  placeholder="Иван Иванов"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-5 py-4 rounded-xl text-gray-800 bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  required
+                />
+              </div>
+              <div className="text-left mb-2">
+                <label className="text-gray-700 text-sm font-bold mb-2 block">Ваш E-mail</label>
+                <input
+                  type="email"
+                  placeholder="ivan@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-5 py-4 rounded-xl text-gray-800 bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg text-lg transform hover:-translate-y-1 mt-4"
+              >
+                Получить чек-лист 🎁
+              </button>
+              <div className="text-xs text-gray-400 mt-4 text-center leading-tight">
+                Нажимая кнопку, вы соглашаетесь с{" "}
+                <a href="#" className="underline hover:text-gray-600">политикой конфиденциальности</a>{" "}
+                и обработкой персональных данных.
+              </div>
+            </form>
+          )}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-logo">Kreativ</div>
-        <div className="footer-copy">© 2024 Все права защищены</div>
-        <div style={{ display: "flex", gap: "1.5rem" }}>
-          {["Telegram", "Instagram", "Behance"].map((s) => (
-            <a
-              key={s}
-              href="#"
-              style={{ fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gray)", textDecoration: "none", transition: "color 0.2s" }}
-              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "var(--neon)")}
-              onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "var(--gray)")}
-            >
-              {s}
-            </a>
-          ))}
+      <footer className="bg-gray-900 text-gray-400 py-16 text-center border-t border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="text-3xl font-extrabold text-white mb-6 tracking-tight">Хакни Маршрут</div>
+          <p className="mb-8 max-w-md mx-auto text-sm">
+            Проект школы «Хакни Нейросети». Создаем технологии, которые делают путешествия доступными и интересными.
+          </p>
+          <div className="mb-8 text-sm">© 2026 ИП Черников С.Н. ОГРНИП 321253600091137.</div>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-sm">
+            <a href="#" className="hover:text-white transition">Политика конфиденциальности</a>
+            <a href="#" className="hover:text-white transition">Договор оферты</a>
+            <a href="#" className="hover:text-white transition">Связаться с нами</a>
+          </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
