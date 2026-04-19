@@ -51,7 +51,7 @@ function HeroSection() {
     let angle = 0;
     let raf: number;
     const animate = () => {
-      angle += 0.008;
+      angle += 0.016;
       const y = Math.sin(angle) * 12;
       const rx = Math.cos(angle * 0.7) * 6;
       el.style.transform = `translateY(${y}px) rotateX(${rx}deg) rotateY(${angle * 20}deg)`;
