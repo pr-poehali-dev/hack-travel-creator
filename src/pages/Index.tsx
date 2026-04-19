@@ -797,7 +797,7 @@ function ArsenalSection() {
       const scrolled = Math.max(0, -rect.top);
       const pct = Math.min(1, scrolled / Math.max(total, 1));
       setProgress(pct);
-      setVisibleArtifacts(ARTIFACTS.map((_, i) => pct > i * 0.22));
+      setVisibleArtifacts(ARTIFACTS.map((_, i) => pct > i * 0.07));
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -877,7 +877,7 @@ function ArsenalSection() {
                 position: "absolute",
                 top: visibleArtifacts[i] ? -70 : -130,
                 left: `${10 + i * 26}%`,
-                transition: `top 0.6s cubic-bezier(.34,1.56,.64,1) ${art.delay}s, opacity 0.4s ease ${art.delay}s`,
+                transition: `top 0.35s cubic-bezier(.34,1.56,.64,1) ${art.delay * 0.4}s, opacity 0.25s ease ${art.delay * 0.4}s`,
                 opacity: visibleArtifacts[i] ? 1 : 0,
                 textAlign: "center",
               }}>
