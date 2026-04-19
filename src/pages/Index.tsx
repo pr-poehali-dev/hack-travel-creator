@@ -1260,6 +1260,251 @@ function ArchitectSection() {
   );
 }
 
+const EXPENSES = [
+  { label: "Копирайтер, который не понимает твой продукт", amount: 50000 },
+  { label: "Фотосессия с арендой студии", amount: 40000 },
+  { label: "Видеомейкер для рилсов", amount: 60000 },
+  { label: "Авторская музыка", amount: 30000 },
+];
+
+function SlotNumber({ value, active, red }: { value: number; active: boolean; red?: boolean }) {
+  const [displayed, setDisplayed] = useState(0);
+  const [spinning, setSpinning] = useState(false);
+
+  useEffect(() => {
+    if (!active) return;
+    setSpinning(true);
+    let start: number | null = null;
+    const duration = 1200 + Math.random() * 600;
+    const raf = (ts: number) => {
+      if (!start) start = ts;
+      const elapsed = ts - start;
+      const progress = Math.min(elapsed / duration, 1);
+      if (progress < 1) {
+        setDisplayed(Math.floor(Math.random() * value * 1.5));
+        requestAnimationFrame(raf);
+      } else {
+        setDisplayed(value);
+        setSpinning(false);
+      }
+    };
+    requestAnimationFrame(raf);
+  }, [active, value]);
+
+  return (
+    <span style={{
+      fontFamily: "'IBM Plex Mono', monospace",
+      fontWeight: 700,
+      fontSize: "inherit",
+      color: red ? (spinning ? "#ff6b6b" : "#ff3030") : "var(--neon)",
+      textShadow: red
+        ? (spinning ? "0 0 20px rgba(255,50,50,0.8), 0 0 40px rgba(255,0,0,0.4)" : "0 0 16px rgba(255,30,30,0.6)")
+        : "0 0 16px rgba(57,255,20,0.6)",
+      transition: "color 0.3s, text-shadow 0.3s",
+      display: "inline-block",
+      minWidth: "6ch",
+    }}>
+      {displayed.toLocaleString("ru-RU")} ₽
+    </span>
+  );
+}
+
+function CalculatorSection() {
+  const [active, setActive] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setActive(true); obs.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const total = EXPENSES.reduce((s, e) => s + e.amount, 0);
+
+  return (
+    <section ref={ref} id="calculator" style={{
+      position: "relative",
+      background: "#050505",
+      padding: "100px 0 120px",
+      overflow: "hidden",
+    }}>
+      {/* Divider top */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(255,30,30,0.4), rgba(57,255,20,0.4), transparent)" }} />
+
+      {/* BG glow */}
+      <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,20,20,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 40px", position: "relative", zIndex: 1 }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.25em", color: "rgba(255,80,80,0.8)", textTransform: "uppercase", marginBottom: "1.2rem" }}>
+            // ЖЕСТОКАЯ МАТЕМАТИКА
+          </div>
+          <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 900, fontSize: "clamp(1.8rem, 4vw, 3rem)", color: "#fff", textTransform: "uppercase", lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: "1rem" }}>
+            Сколько стоит твоё{" "}
+            <span style={{ color: "rgba(255,60,60,0.9)", textShadow: "0 0 24px rgba(255,30,30,0.5)" }}>бездействие?</span>
+          </h2>
+          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "1rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
+            Давай считать твои расходы на продакшен за месяц:
+          </p>
+        </div>
+
+        {/* Two columns */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }}>
+
+          {/* LEFT — Without AI (red, spinning) */}
+          <div style={{
+            background: "linear-gradient(135deg, rgba(255,20,20,0.08), rgba(180,0,0,0.04))",
+            border: "1px solid rgba(255,40,40,0.25)",
+            borderRadius: 8,
+            padding: "32px 28px",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            {/* Flame overlay */}
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 110%, rgba(255,50,0,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.2em", color: "rgba(255,80,80,0.7)", textTransform: "uppercase", marginBottom: "1.5rem" }}>
+              🔥 БЕЗ ИИ / МЕСЯЦ
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", marginBottom: "2rem" }}>
+              {EXPENSES.map((e, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "1rem" }}>
+                  <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.5, flex: 1 }}>{e.label}</span>
+                  <div style={{ fontSize: "1rem", flexShrink: 0 }}>
+                    <SlotNumber value={e.amount} active={active} red />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Total */}
+            <div style={{
+              background: "rgba(255,20,20,0.1)",
+              border: "1px solid rgba(255,40,40,0.3)",
+              borderRadius: 6,
+              padding: "16px 20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
+              <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: "0.9rem", color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.05em" }}>ИТОГО:</span>
+              <div style={{ fontSize: "1.5rem" }}>
+                <SlotNumber value={total} active={active} red />
+              </div>
+            </div>
+            <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "0.78rem", color: "rgba(255,100,100,0.6)", marginTop: "0.8rem", textAlign: "center" }}>И куча потраченных нервов.</p>
+          </div>
+
+          {/* RIGHT — With AI (gold zero) */}
+          <div style={{
+            background: "linear-gradient(135deg, rgba(57,255,20,0.07), rgba(0,240,255,0.04))",
+            border: "1px solid rgba(57,255,20,0.25)",
+            borderRadius: 8,
+            padding: "32px 28px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(57,255,20,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.2em", color: "var(--neon)", textTransform: "uppercase", marginBottom: "1.5rem" }}>
+              ⚡ С ИИ-ВОРКШОПОМ
+            </div>
+
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}>
+              {/* Zero */}
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontWeight: 900,
+                fontSize: "clamp(4rem, 10vw, 7rem)",
+                color: "#ffd700",
+                textShadow: "0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.2)",
+                lineHeight: 1,
+                letterSpacing: "-0.04em",
+                animation: active ? "gold-pulse 2s ease-in-out infinite" : "none",
+              }}>0 ₽</div>
+
+              <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", textAlign: "center", lineHeight: 1.6, maxWidth: 260 }}>
+                Нейросети работают на тебя <span style={{ color: "var(--neon)", fontWeight: 700 }}>бесплатно. Всегда.</span>
+              </div>
+
+              {/* AI tools list */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "center" }}>
+                {["МультиЧат", "Freepik", "Kling", "Suno", "Veo", "Нано Банано"].map((t, i) => (
+                  <span key={i} style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: "0.6rem",
+                    color: "var(--neon-blue)",
+                    border: "1px solid rgba(0,240,255,0.25)",
+                    borderRadius: 3,
+                    padding: "3px 8px",
+                    letterSpacing: "0.08em",
+                  }}>{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{
+              marginTop: "1.5rem",
+              background: "rgba(57,255,20,0.07)",
+              border: "1px solid rgba(57,255,20,0.2)",
+              borderRadius: 6,
+              padding: "14px 18px",
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              fontSize: "0.82rem",
+              color: "rgba(255,255,255,0.75)",
+              lineHeight: 1.6,
+            }}>
+              💡 Билет окупается в момент генерации <strong style={{ color: "#fff" }}>первой карточки товара.</strong>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom divider math */}
+        <div style={{
+          textAlign: "center",
+          padding: "28px",
+          background: "linear-gradient(135deg, rgba(255,215,0,0.04), rgba(57,255,20,0.04))",
+          border: "1px solid rgba(255,215,0,0.15)",
+          borderRadius: 8,
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: "clamp(0.8rem, 1.5vw, 1rem)",
+          color: "rgba(255,255,255,0.6)",
+          letterSpacing: "0.05em",
+        }}>
+          <span style={{ color: "rgba(255,80,80,0.8)" }}>180 000 ₽/мес</span>
+          {" "}×{" "}
+          <span style={{ color: "rgba(255,255,255,0.4)" }}>12 месяцев</span>
+          {" "}={" "}
+          <span style={{ color: "#ff3030", fontWeight: 700, textShadow: "0 0 12px rgba(255,0,0,0.4)" }}>2 160 000 ₽ в год</span>
+          {" "}→{" "}
+          <span style={{ color: "#ffd700", fontWeight: 700, textShadow: "0 0 12px rgba(255,215,0,0.4)" }}>ты сжигаешь</span>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes gold-pulse {
+          0%, 100% { text-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.2); }
+          50% { text-shadow: 0 0 60px rgba(255,215,0,0.9), 0 0 120px rgba(255,215,0,0.4), 0 0 160px rgba(255,215,0,0.15); }
+        }
+        @media (max-width: 768px) {
+          #calculator > div > div[style*="grid"] { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 export default function Index() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
@@ -1358,6 +1603,9 @@ export default function Index() {
 
       {/* Architect Section */}
       <ArchitectSection />
+
+      {/* Calculator Section */}
+      <CalculatorSection />
 
       {/* Marquee */}
       <div className="marquee-wrap">
