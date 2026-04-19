@@ -35,13 +35,15 @@
     --radius: 0rem;
 
     /* Brand */
-    --neon: #ffa500;
-    --neon-dim: rgba(255, 165, 0, 0.15);
-    --dark: #0a0a0a;
-    --dark-2: #111111;
-    --dark-3: #1a1a1a;
-    --light: #f5f5f0;
-    --gray: #888888;
+    --neon: #39ff14;
+    --neon-blue: #00f0ff;
+    --neon-dim: rgba(57, 255, 20, 0.12);
+    --neon-blue-dim: rgba(0, 240, 255, 0.12);
+    --dark: #050505;
+    --dark-2: #0d0d0d;
+    --dark-3: #141414;
+    --light: #f0f0f0;
+    --gray: #777777;
   }
 }
 
