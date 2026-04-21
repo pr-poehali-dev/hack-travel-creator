@@ -411,7 +411,7 @@ body::before {
 }
 
 /* Sections base */
-section {
+section:not(#home) {
   padding: 8rem 3rem;
 }
 
