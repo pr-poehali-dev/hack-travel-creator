@@ -136,7 +136,8 @@ body::before {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.6rem 3rem;
+  height: 58px;
+  padding: 0 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -964,7 +965,7 @@ section {
 
   /* Hero */
   #home {
-    padding: 54px 1.6rem 3rem !important;
+    padding: 58px 1.6rem 3rem !important;
   }
   .holo-ticket {
     display: none !important;

@@ -174,7 +174,7 @@ export default function HeroBlock() {
       alignItems: "flex-start",
       justifyContent: "center",
       overflow: "hidden",
-      padding: "54px 40px 80px",
+      padding: "58px 40px 80px",
       minHeight: "100vh",
     }}>
       <QuantumCanvas />
