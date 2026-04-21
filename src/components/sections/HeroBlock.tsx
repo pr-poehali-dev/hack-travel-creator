@@ -142,7 +142,10 @@ export default function HeroBlock() {
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      padding: "58px 40px 80px",
+      paddingTop: "58px",
+      paddingLeft: "40px",
+      paddingRight: "40px",
+      paddingBottom: "80px",
     }}>
       <ParticlesBg />
 
