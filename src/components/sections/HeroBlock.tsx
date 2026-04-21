@@ -1,5 +1,134 @@
 import { useEffect, useRef, useState } from "react";
 
+function QuantumCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const setSize = () => {
+      const s = canvas.parentElement;
+      if (!s) return;
+      canvas.width = s.offsetWidth;
+      canvas.height = s.offsetHeight;
+    };
+    setSize();
+    window.addEventListener("resize", setSize);
+
+    type Particle = {
+      x: number; y: number; vx: number; vy: number;
+      size: number; color: string; alpha: number;
+      life: number; maxLife: number; trail: { x: number; y: number }[];
+    };
+    type Rift = {
+      x: number; y: number; angle: number; length: number;
+      width: number; alpha: number; color: string; speed: number; phase: number;
+    };
+
+    const COLORS = ["#39ff14", "#00f0ff", "#b400ff", "#ff003c", "#ffffff"];
+    const particles: Particle[] = [];
+    const rifts: Rift[] = Array.from({ length: 6 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      angle: Math.random() * Math.PI,
+      length: 60 + Math.random() * 140,
+      width: 1 + Math.random() * 3,
+      alpha: 0,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      speed: 0.008 + Math.random() * 0.012,
+      phase: Math.random() * Math.PI * 2,
+    }));
+
+    const spawn = (x: number, y: number, color: string) => {
+      const a = Math.random() * Math.PI * 2;
+      const s = 0.5 + Math.random() * 2;
+      particles.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, size: 1 + Math.random() * 2.5, color, alpha: 1, life: 0, maxLife: 60 + Math.random() * 80, trail: [] });
+    };
+
+    let frame = 0;
+    let raf: number;
+
+    const draw = () => {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.fillStyle = "rgba(5,5,5,0.18)";
+      ctx.fillRect(0, 0, W, H);
+      frame++;
+
+      rifts.forEach((r) => {
+        r.phase += r.speed;
+        r.alpha = 0.3 + Math.sin(r.phase) * 0.3;
+        r.x += Math.sin(r.phase * 0.3) * 0.3;
+        r.y += Math.cos(r.phase * 0.2) * 0.2;
+        if (r.x < -50) r.x = W + 50;
+        if (r.x > W + 50) r.x = -50;
+        if (r.y < -50) r.y = H + 50;
+        if (r.y > H + 50) r.y = -50;
+
+        const len = r.length * (0.7 + Math.sin(r.phase * 2) * 0.3);
+        const x1 = r.x - Math.cos(r.angle) * len / 2;
+        const y1 = r.y - Math.sin(r.angle) * len / 2;
+        const x2 = r.x + Math.cos(r.angle) * len / 2;
+        const y2 = r.y + Math.sin(r.angle) * len / 2;
+
+        ctx.save();
+        ctx.globalAlpha = r.alpha * 0.15;
+        ctx.strokeStyle = r.color; ctx.lineWidth = r.width * 6;
+        ctx.lineCap = "round"; ctx.shadowBlur = 20; ctx.shadowColor = r.color;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.globalAlpha = r.alpha; ctx.lineWidth = r.width; ctx.shadowBlur = 12;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.restore();
+
+        if (frame % 8 === 0 && Math.random() > 0.4) {
+          spawn(x1 + (Math.random() - 0.5) * 10, y1 + (Math.random() - 0.5) * 10, r.color);
+          spawn(x2 + (Math.random() - 0.5) * 10, y2 + (Math.random() - 0.5) * 10, r.color);
+        }
+
+        const t = (Math.sin(r.phase * 3) + 1) / 2;
+        ctx.save();
+        ctx.globalAlpha = r.alpha * 0.9; ctx.fillStyle = r.color;
+        ctx.shadowBlur = 15; ctx.shadowColor = r.color;
+        ctx.beginPath(); ctx.arc(x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, r.width * 2, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
+      if (frame % 3 === 0) spawn(Math.random() * W, Math.random() * H, COLORS[Math.floor(Math.random() * COLORS.length)]);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.trail.push({ x: p.x, y: p.y });
+        if (p.trail.length > 8) p.trail.shift();
+        p.x += p.vx; p.y += p.vy; p.vx *= 0.97; p.vy *= 0.97;
+        p.life++; p.alpha = 1 - p.life / p.maxLife;
+        if (p.trail.length > 1) {
+          ctx.save(); ctx.strokeStyle = p.color; ctx.lineWidth = p.size * 0.5; ctx.lineCap = "round";
+          for (let t = 1; t < p.trail.length; t++) {
+            ctx.globalAlpha = p.alpha * (t / p.trail.length) * 0.4;
+            ctx.beginPath(); ctx.moveTo(p.trail[t-1].x, p.trail[t-1].y); ctx.lineTo(p.trail[t].x, p.trail[t].y); ctx.stroke();
+          }
+          ctx.restore();
+        }
+        ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8; ctx.shadowColor = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        if (p.life >= p.maxLife) particles.splice(i, 1);
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    raf = requestAnimationFrame(draw);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", setSize); };
+  }, []);
+
+  return (
+    <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none", display: "block" }} />
+  );
+}
 
 export default function HeroBlock() {
   const [btnHover, setBtnHover] = useState(false);
@@ -48,6 +177,8 @@ export default function HeroBlock() {
       padding: "44px 40px 80px",
       minHeight: "100vh",
     }}>
+      <QuantumCanvas />
+
       {/* Content */}
       <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
         <p style={{
