@@ -41,9 +41,10 @@ export default function HeroBlock() {
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      padding: "58px 40px 80px",
-      marginTop: 0,
-      minHeight: "100vh",
+      paddingTop: "58px",
+      paddingLeft: "40px",
+      paddingRight: "40px",
+      paddingBottom: "80px",
     }}>
       {/* Content */}
       <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
