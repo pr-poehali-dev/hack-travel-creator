@@ -247,7 +247,7 @@ export default function HeroBlock() {
       alignItems: "flex-start",
       justifyContent: "center",
       overflow: "hidden",
-      padding: "clamp(3rem, 6vw, 80px) 40px 80px",
+      padding: "44px 40px 80px",
       minHeight: "100vh",
     }}>
       {/* Animated grid bg */}
