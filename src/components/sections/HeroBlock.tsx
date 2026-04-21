@@ -143,12 +143,16 @@ export default function HeroBlock() {
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      padding: "58px 40px 80px",
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-end",
+      padding: "58px 40px 48px",
     }}>
       <ParticlesBg />
 
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", paddingTop: "0" }}>
+      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: "0.75rem",
