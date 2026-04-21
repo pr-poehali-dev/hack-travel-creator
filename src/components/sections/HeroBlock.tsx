@@ -42,6 +42,7 @@ export default function HeroBlock() {
       background: "#050505",
       overflow: "hidden",
       padding: "58px 40px 80px",
+      marginTop: 0,
       minHeight: "100vh",
     }}>
       {/* Content */}
