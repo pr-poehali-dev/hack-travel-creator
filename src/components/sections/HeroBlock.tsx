@@ -151,7 +151,7 @@ export default function HeroBlock() {
   return (
     <section id="home" ref={sectionRef} style={{
       position: "relative",
-      background: "#050505",
+      background: "red",
       overflow: "hidden",
       padding: "0 40px 80px",
     }}>
