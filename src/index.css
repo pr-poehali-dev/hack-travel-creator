@@ -1194,14 +1194,18 @@ section:not(#home) {
 /* Mobile */
 @media (max-width: 768px) {
   .navbar {
-    padding: 1.25rem 1.5rem;
+    padding: 0 1.5rem;
+    height: 58px;
   }
   .nav-links {
     display: none;
   }
 
-  section {
+  section:not(#home) {
     padding: 5rem 1.5rem;
+  }
+  #home {
+    padding: 58px 1.5rem 80px !important;
   }
   .hero {
     padding: 0 1.5rem 4rem;
