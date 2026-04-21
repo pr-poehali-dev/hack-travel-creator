@@ -41,12 +41,10 @@ export default function HeroBlock() {
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      padding: "58px 40px 80px 40px",
-      all: "unset",
-      display: "block",
-    } as React.CSSProperties}>
+      padding: "58px 40px 80px",
+    }}>
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
+      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", border: "3px solid red" }}>
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: "0.75rem",
