@@ -136,11 +136,13 @@ body::before {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1.5rem 3rem;
+  padding: 0.6rem 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: background 0.3s ease;
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(10px);
 }
 
 .navbar.scrolled {
@@ -963,7 +965,6 @@ section {
   /* Hero */
   #home {
     padding: 10px 1.6rem 3rem !important;
-    align-items: flex-start !important;
   }
   .holo-ticket {
     display: none !important;

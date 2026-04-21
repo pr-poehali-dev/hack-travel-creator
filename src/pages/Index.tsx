@@ -283,13 +283,13 @@ function HeroSection() {
   return (
     <section id="home" style={{
       position: "relative",
-      minHeight: "100vh",
       background: "#050505",
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       justifyContent: "center",
       overflow: "hidden",
-      padding: "clamp(4.5rem, 10vw, 120px) 40px 80px",
+      padding: "clamp(3rem, 6vw, 80px) 40px 80px",
+      minHeight: "100vh",
     }}>
       {/* Animated grid bg */}
       <div style={{
