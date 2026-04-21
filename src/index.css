@@ -876,6 +876,302 @@ section {
   transform: translateY(0);
 }
 
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE SYSTEM — Golden Ratio φ = 1.618
+   Base unit: 16px
+   Scale: 10 → 16 → 26 → 42 → 68 → 110 → 178px
+   Breakpoints (px / φ steps):
+     φ⁰ desktop  : 1440+
+     φ¹ laptop   : 1024px  (1440 / φ ≈ 890, round 1024)
+     φ² tablet   : 768px   (1024 / φ ≈ 632, round 768)  
+     φ³ mobile-L : 480px   (768  / φ ≈ 475, round 480)
+     φ⁴ mobile-S : 360px   (480  / φ ≈ 297, round 360)
+═══════════════════════════════════════════════════ */
+
+/* ── φ¹ LAPTOP 1024px ── */
+@media (max-width: 1024px) {
+  /* Navbar */
+  .navbar {
+    padding: 1.2rem 2rem;
+  }
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  /* Section padding */
+  section {
+    padding: 5rem 2.5rem;
+  }
+
+  /* Pain grid → 1 col */
+  #pain .pain-grid {
+    grid-template-columns: 1fr !important;
+    min-height: unset !important;
+  }
+
+  /* Solution: perks 2-col, curators 4-col */
+  #solution .perks-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #solution .curators-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  /* Arsenal days → keep 2-col, reduce gap */
+  #arsenal .days-grid {
+    gap: 1.2rem !important;
+  }
+
+  /* Calculator 2-col stays, reduce padding */
+  #calculator .calc-grid {
+    gap: 1.2rem !important;
+  }
+
+  /* Tariffs 2-col */
+  #tariffs .tariffs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Cases 2-col stays */
+
+  /* Architect gap */
+  #architect .architect-grid {
+    gap: 3rem !important;
+  }
+}
+
+/* ── φ² TABLET 768px ── */
+@media (max-width: 768px) {
+  /* Navbar — hide links, keep logo + cta */
+  .navbar {
+    padding: 1rem 1.6rem;
+    gap: 0;
+  }
+  .nav-links {
+    display: none;
+  }
+  .navbar .btn-primary {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.65rem !important;
+  }
+
+  /* Section padding — φ: 42px vertical, 26px horizontal */
+  section {
+    padding: 4rem 1.6rem;
+  }
+
+  /* Hero */
+  #home {
+    padding: 6rem 1.6rem 4rem !important;
+  }
+  .holo-ticket {
+    display: none !important;
+  }
+
+  /* Pain */
+  #pain > div {
+    padding: 0 1.6rem !important;
+  }
+  #pain .pain-grid {
+    grid-template-columns: 1fr !important;
+    min-height: unset !important;
+  }
+  #pain .pain-left {
+    padding: 2.5rem 1.6rem !important;
+  }
+  #pain .pain-right {
+    padding: 2.5rem 1.6rem !important;
+    border-right: none !important;
+    border-top: 1px solid rgba(255, 40, 40, 0.15) !important;
+  }
+
+  /* Solution */
+  #solution {
+    padding: 4rem 0 5rem !important;
+  }
+  #solution > div {
+    padding: 0 1.6rem !important;
+  }
+  #solution .perks-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #solution .curators-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Arsenal */
+  #arsenal > div {
+    padding: 0 1.6rem !important;
+  }
+  #arsenal .days-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  #arsenal .belt-wrap {
+    display: none !important;
+  }
+
+  /* Architect */
+  #architect > div {
+    padding: 0 1.6rem !important;
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  /* Calculator */
+  #calculator > div {
+    padding: 0 1.6rem !important;
+  }
+  #calculator .calc-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Tariffs */
+  #tariffs > div {
+    padding: 0 1.6rem !important;
+  }
+  #tariffs .tariffs-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #tariffs .vault-panel {
+    display: none !important;
+  }
+
+  /* FAQ */
+  #faq > div {
+    padding: 0 1.6rem !important;
+  }
+
+  /* Cases */
+  #cases > div {
+    padding: 0 1.6rem !important;
+  }
+  #cases .cases-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Guarantee */
+  #guarantee > div {
+    padding: 0 1.6rem !important;
+  }
+  #guarantee .guarantee-btn {
+    padding: 18px 32px !important;
+    font-size: 0.9rem !important;
+    width: 100% !important;
+  }
+}
+
+/* ── φ³ MOBILE-L 480px ── */
+@media (max-width: 480px) {
+  /* Section padding — 2.5rem vert, 1rem horiz */
+  section {
+    padding: 3rem 1rem;
+  }
+
+  /* Hero */
+  #home {
+    padding: 5rem 1rem 3rem !important;
+  }
+
+  /* Pain */
+  #pain .pain-left,
+  #pain .pain-right {
+    padding: 2rem 1rem !important;
+  }
+
+  /* Solution curators → 2-col tight */
+  #solution > div {
+    padding: 0 1rem !important;
+  }
+  #solution .curators-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Arsenal */
+  #arsenal > div {
+    padding: 0 1rem !important;
+  }
+
+  /* Architect */
+  #architect > div {
+    padding: 0 1rem !important;
+    gap: 2rem !important;
+  }
+
+  /* Calculator */
+  #calculator > div {
+    padding: 0 1rem !important;
+  }
+
+  /* Tariffs */
+  #tariffs > div {
+    padding: 0 1rem !important;
+  }
+
+  /* TariffCard inner padding */
+  #tariffs .tariff-card-inner {
+    padding: 26px 20px !important;
+  }
+
+  /* FAQ */
+  #faq > div {
+    padding: 0 1rem !important;
+  }
+  #faq .faq-answer {
+    padding-left: 1rem !important;
+  }
+
+  /* Cases */
+  #cases > div {
+    padding: 0 1rem !important;
+  }
+
+  /* Guarantee */
+  #guarantee > div {
+    padding: 0 1rem !important;
+  }
+  #guarantee .guarantee-text-block {
+    padding: 20px 16px !important;
+  }
+
+  /* Curator card min-height off */
+  #solution .curator-card {
+    min-height: unset !important;
+  }
+}
+
+/* ── φ⁴ MOBILE-S 360px ── */
+@media (max-width: 360px) {
+  section {
+    padding: 2.5rem 0.8rem;
+  }
+  #home {
+    padding: 4.5rem 0.8rem 2.5rem !important;
+  }
+  #solution .curators-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #tariffs .tariffs-grid {
+    gap: 0.8rem !important;
+  }
+  #cases .cases-grid {
+    gap: 0.8rem !important;
+  }
+}
+
+/* ── CUSTOM CURSOR: disable on touch ── */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+  .cursor,
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
 .fade-up-delay-1 {
   transition-delay: 0.1s;
 }

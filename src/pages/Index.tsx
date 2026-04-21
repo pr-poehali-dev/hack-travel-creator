@@ -354,10 +354,10 @@ function PainSection() {
         background: "linear-gradient(90deg, transparent, rgba(255,40,40,0.5), transparent)",
       }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0, minHeight: 560 }}>
+      <div className="pain-grid" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0, minHeight: 560 }}>
 
         {/* LEFT — RED CHAOS */}
-        <div style={{
+        <div className="pain-left" style={{
           position: "relative",
           background: "linear-gradient(135deg, rgba(180,0,0,0.12) 0%, rgba(255,40,40,0.06) 100%)",
           borderRight: "1px solid rgba(255,40,40,0.2)",
@@ -436,7 +436,7 @@ function PainSection() {
         </div>
 
         {/* RIGHT — GREEN FUTURE */}
-        <div style={{
+        <div className="pain-right" style={{
           background: "linear-gradient(135deg, rgba(0,10,0,0.8) 0%, rgba(0,20,5,0.6) 100%)",
           padding: "60px 50px",
           position: "relative",
@@ -546,6 +546,7 @@ function CuratorCard({ curator, index }: { curator: typeof CURATORS[0]; index: n
   const [hovered, setHovered] = useState(false);
   return (
     <div
+      className="curator-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -682,7 +683,7 @@ function SolutionSection() {
         </div>
 
         {/* Perks row */}
-        <div style={{
+        <div className="perks-grid" style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "1.5rem",
@@ -736,7 +737,7 @@ function SolutionSection() {
         </div>
 
         {/* Curators grid */}
-        <div style={{
+        <div className="curators-grid" style={{
           display: "grid",
           gridTemplateColumns: "repeat(5, 1fr)",
           gap: "1rem",
@@ -847,7 +848,7 @@ function ArsenalSection() {
         </div>
 
         {/* Conveyor belt */}
-        <div style={{
+        <div className="belt-wrap" style={{
           position: "relative",
           marginBottom: "5rem",
           padding: "0 0 40px",
@@ -913,7 +914,7 @@ function ArsenalSection() {
         </div>
 
         {/* Days grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+        <div className="days-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
 
           {/* DAY 1 */}
           <div style={{
@@ -1085,7 +1086,7 @@ function ArchitectSection() {
       {/* Divider top */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(0,240,255,0.4), transparent)" }} />
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px", position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }}>
+      <div className="architect-grid" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px", position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }}>
 
         {/* LEFT — Photo + code bg */}
         <div style={{ position: "relative" }}>
@@ -1356,7 +1357,7 @@ function CalculatorSection() {
         </div>
 
         {/* Two columns */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }}>
+        <div className="calc-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }}>
 
           {/* LEFT — Without AI (red, spinning) */}
           <div style={{
@@ -1785,8 +1786,8 @@ function TariffsSection() {
         `,
       }} />
       {/* Steel vault panels */}
-      <div style={{ position: "absolute", top: 0, left: 0, width: "18%", height: "100%", background: "linear-gradient(90deg, rgba(30,30,35,0.9), rgba(20,20,25,0.4))", borderRight: "2px solid rgba(255,255,255,0.06)", zIndex: 0 }} />
-      <div style={{ position: "absolute", top: 0, right: 0, width: "18%", height: "100%", background: "linear-gradient(270deg, rgba(30,30,35,0.9), rgba(20,20,25,0.4))", borderLeft: "2px solid rgba(255,255,255,0.06)", zIndex: 0 }} />
+      <div className="vault-panel" style={{ position: "absolute", top: 0, left: 0, width: "18%", height: "100%", background: "linear-gradient(90deg, rgba(30,30,35,0.9), rgba(20,20,25,0.4))", borderRight: "2px solid rgba(255,255,255,0.06)", zIndex: 0 }} />
+      <div className="vault-panel" style={{ position: "absolute", top: 0, right: 0, width: "18%", height: "100%", background: "linear-gradient(270deg, rgba(30,30,35,0.9), rgba(20,20,25,0.4))", borderLeft: "2px solid rgba(255,255,255,0.06)", zIndex: 0 }} />
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px", position: "relative", zIndex: 1 }}>
 
@@ -1820,7 +1821,7 @@ function TariffsSection() {
         </div>
 
         {/* Tariff cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem", marginBottom: "3rem" }}>
+        <div className="tariffs-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem", marginBottom: "3rem" }}>
           {TARIFFS.map((t) => (
             <TariffCard key={t.id} tariff={t} mousePos={mousePos} />
           ))}
@@ -2080,7 +2081,7 @@ function CasesSection() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+        <div className="cases-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
           {CASES.map((c, i) => <CaseCard key={i} c={c} i={i} />)}
         </div>
       </div>
@@ -2161,7 +2162,7 @@ function GuaranteeSection() {
         </h2>
 
         {/* Guarantee text block */}
-        <div style={{
+        <div className="guarantee-text-block" style={{
           background: "linear-gradient(135deg, rgba(57,255,20,0.05), rgba(0,240,255,0.03))",
           border: "1px solid rgba(57,255,20,0.2)",
           borderRadius: 8, padding: "32px 36px", marginBottom: "3rem",
@@ -2181,6 +2182,7 @@ function GuaranteeSection() {
 
         {/* CTA Button — metallic */}
         <button
+          className="guarantee-btn"
           onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
           style={{
