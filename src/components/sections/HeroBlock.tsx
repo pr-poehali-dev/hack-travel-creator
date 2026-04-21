@@ -151,14 +151,14 @@ export default function HeroBlock() {
   return (
     <section id="home" ref={sectionRef} style={{
       position: "relative",
-      background: "red",
+      background: "#050505",
       overflow: "hidden",
       padding: "0 40px 80px",
     }}>
       <ParticlesBg />
 
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", paddingTop: "58px" }}>
+      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", paddingTop: "0" }}>
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: "0.75rem",

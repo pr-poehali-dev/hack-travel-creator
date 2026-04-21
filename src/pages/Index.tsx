@@ -74,7 +74,7 @@ export default function Index() {
       <div className="cursor-ring" ref={cursorRingRef} />
 
       {/* Navbar */}
-      <nav className="navbar" ref={navRef} style={{ background: "blue" }}>
+      <nav className="navbar" ref={navRef}>
         <div className="nav-logo">Kreativ</div>
         <div className="nav-links">
           {(["Главная", "О нас", "Услуги", "Портфолио", "Контакты"] as const).map((item, i) => (
