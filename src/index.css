@@ -962,7 +962,7 @@ section {
 
   /* Hero */
   #home {
-    padding: 3rem 1.6rem 3rem !important;
+    padding: 10px 1.6rem 3rem !important;
     align-items: flex-start !important;
   }
   .holo-ticket {
