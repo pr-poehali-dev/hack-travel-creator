@@ -41,7 +41,7 @@ export default function HeroBlock() {
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      paddingTop: "58px",
+      paddingTop: "0",
       paddingLeft: "40px",
       paddingRight: "40px",
       paddingBottom: "80px",

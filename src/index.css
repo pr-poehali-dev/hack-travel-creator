@@ -419,11 +419,8 @@ section:not(#home) {
 }
 
 #home {
-  padding-top: 58px !important;
-}
-
-#home * {
-  margin-top: 0;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .section-label {
