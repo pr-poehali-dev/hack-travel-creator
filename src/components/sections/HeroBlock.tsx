@@ -108,16 +108,6 @@ export default function HeroBlock() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const s = sectionRef.current;
-    if (s) {
-      const cs = window.getComputedStyle(s);
-      console.log("HOME computed paddingTop:", cs.paddingTop);
-      console.log("HOME computed marginTop:", cs.marginTop);
-      console.log("HOME getBoundingClientRect top:", s.getBoundingClientRect().top);
-    }
-  }, []);
-
-  useEffect(() => {
     const el = glitchRef.current;
     if (!el) return;
     let t: ReturnType<typeof setTimeout>;
