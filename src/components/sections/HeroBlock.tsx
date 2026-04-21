@@ -44,7 +44,7 @@ export default function HeroBlock() {
       padding: "58px 40px 80px",
     }}>
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", border: "3px solid red" }}>
+      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: "0.75rem",
