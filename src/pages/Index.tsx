@@ -70,7 +70,7 @@ function HeroSection() {
       alignItems: "center",
       justifyContent: "center",
       overflow: "hidden",
-      padding: "120px 40px 80px",
+      padding: "clamp(4.5rem, 10vw, 120px) 40px 80px",
     }}>
       {/* Animated grid bg */}
       <div style={{
