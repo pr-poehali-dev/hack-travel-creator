@@ -1,5 +1,106 @@
 import { useEffect, useRef, useState } from "react";
 
+function ParticlesBg() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let W = 0, H = 0, raf = 0;
+
+    const resize = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      W = canvas.width = parent.offsetWidth;
+      H = canvas.height = parent.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    type P = { x: number; y: number; vx: number; vy: number; r: number; color: string; life: number; max: number; tail: [number,number][] };
+    const COLORS = ["#39ff14","#00f0ff","#ff003c","#b400ff","#ffffff","#ffdd00"];
+    const ps: P[] = [];
+
+    const add = (x: number, y: number, burst = false) => {
+      const n = burst ? 12 : 1;
+      for (let i = 0; i < n; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = burst ? 1 + Math.random() * 4 : 0.3 + Math.random() * 1.2;
+        ps.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          r: burst ? 1.5 + Math.random() * 3 : 1 + Math.random() * 2,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          life: 0, max: burst ? 80 + Math.random() * 60 : 120 + Math.random() * 80,
+          tail: [],
+        });
+      }
+    };
+
+    // seed initial particles
+    for (let i = 0; i < 40; i++) add(Math.random() * (W||1200), Math.random() * (H||700));
+
+    let frame = 0;
+    const draw = () => {
+      frame++;
+      ctx.fillStyle = "rgba(5,5,5,0.15)";
+      ctx.fillRect(0, 0, W, H);
+
+      // spawn new
+      if (frame % 4 === 0) add(Math.random() * W, Math.random() * H);
+      // random burst
+      if (frame % 90 === 0) add(Math.random() * W, Math.random() * H, true);
+
+      for (let i = ps.length - 1; i >= 0; i--) {
+        const p = ps[i];
+        p.tail.push([p.x, p.y]);
+        if (p.tail.length > 10) p.tail.shift();
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= 0.98; p.vy *= 0.98;
+        p.life++;
+        const a = 1 - p.life / p.max;
+
+        // tail
+        if (p.tail.length > 1) {
+          ctx.save();
+          for (let t = 1; t < p.tail.length; t++) {
+            ctx.globalAlpha = a * (t / p.tail.length) * 0.5;
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = p.r * 0.4;
+            ctx.shadowBlur = 6; ctx.shadowColor = p.color;
+            ctx.beginPath();
+            ctx.moveTo(p.tail[t-1][0], p.tail[t-1][1]);
+            ctx.lineTo(p.tail[t][0], p.tail[t][1]);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // dot
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 12; ctx.shadowColor = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+
+        if (p.life >= p.max) ps.splice(i, 1);
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
+
+  return <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }} />;
+}
+
 export default function HeroBlock() {
   const [btnHover, setBtnHover] = useState(false);
   const glitchRef = useRef<HTMLHeadingElement>(null);
@@ -43,6 +144,8 @@ export default function HeroBlock() {
       overflow: "hidden",
       padding: "58px 40px 80px",
     }}>
+      <ParticlesBg />
+
       {/* Content */}
       <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
         <p style={{
