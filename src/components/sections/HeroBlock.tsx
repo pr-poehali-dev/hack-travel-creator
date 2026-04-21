@@ -250,38 +250,8 @@ export default function HeroBlock() {
       padding: "44px 40px 80px",
       minHeight: "100vh",
     }}>
-      {/* Animated grid bg */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 0,
-        backgroundImage: `
-          linear-gradient(rgba(57,255,20,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(57,255,20,0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: "60px 60px",
-      }} />
-
-      {/* Neon glows */}
-      <div style={{
-        position: "absolute", top: "20%", left: "10%",
-        width: 500, height: 500, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(57,255,20,0.07) 0%, transparent 70%)",
-        zIndex: 0, pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", bottom: "10%", right: "5%",
-        width: 400, height: 400, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(0,240,255,0.08) 0%, transparent 70%)",
-        zIndex: 0, pointerEvents: "none",
-      }} />
-
       {/* Quantum canvas */}
       <QuantumCanvas />
-
-      {/* Scan lines */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-        backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
-      }} />
 
       {/* Content */}
       <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
