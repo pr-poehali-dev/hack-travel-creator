@@ -419,8 +419,7 @@ section:not(#home) {
 }
 
 #home {
-  padding-top: 0 !important;
-  margin-top: 0 !important;
+  padding-top: 58px !important;
 }
 
 .section-label {
