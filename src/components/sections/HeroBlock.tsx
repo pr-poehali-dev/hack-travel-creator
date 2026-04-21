@@ -188,18 +188,16 @@ function QuantumCanvas() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 1,
-        pointerEvents: "none",
-        display: "block",
-      }}
-    />
+    <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}>
+      <canvas
+        ref={canvasRef}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "block",
+        }}
+      />
+    </div>
   );
 }
 
