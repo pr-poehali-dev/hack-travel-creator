@@ -170,9 +170,6 @@ export default function HeroBlock() {
     <section id="home" style={{
       position: "relative",
       background: "#050505",
-      display: "flex",
-      alignItems: "flex-start",
-      justifyContent: "center",
       overflow: "hidden",
       padding: "58px 40px 80px",
       minHeight: "100vh",
