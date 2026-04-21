@@ -902,7 +902,7 @@ section:not(#home) {
   }
 
   /* Section padding */
-  section {
+  section:not(#home) {
     padding: 5rem 2.5rem;
   }
 
@@ -959,7 +959,7 @@ section:not(#home) {
   }
 
   /* Section padding — φ: 42px vertical, 26px horizontal */
-  section {
+  section:not(#home) {
     padding: 4rem 1.6rem;
   }
 
@@ -1068,13 +1068,13 @@ section:not(#home) {
 /* ── φ³ MOBILE-L 480px ── */
 @media (max-width: 480px) {
   /* Section padding — 2.5rem vert, 1rem horiz */
-  section {
+  section:not(#home) {
     padding: 3rem 1rem;
   }
 
   /* Hero */
   #home {
-    padding: 5rem 1rem 3rem !important;
+    padding: 58px 1rem 3rem !important;
   }
 
   /* Pain */
@@ -1147,11 +1147,11 @@ section:not(#home) {
 
 /* ── φ⁴ MOBILE-S 360px ── */
 @media (max-width: 360px) {
-  section {
+  section:not(#home) {
     padding: 2.5rem 0.8rem;
   }
   #home {
-    padding: 4.5rem 0.8rem 2.5rem !important;
+    padding: 58px 0.8rem 2.5rem !important;
   }
   #solution .curators-grid {
     grid-template-columns: 1fr !important;
