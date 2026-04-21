@@ -418,6 +418,10 @@ section:not(#home) {
   padding: 8rem 3rem;
 }
 
+#home {
+  padding-top: 58px !important;
+}
+
 .section-label {
   font-family: "IBM Plex Sans", sans-serif;
   font-size: 0.65rem;
