@@ -105,6 +105,17 @@ export default function HeroBlock() {
   const [btnHover, setBtnHover] = useState(false);
   const glitchRef = useRef<HTMLHeadingElement>(null);
   const ticketRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const s = sectionRef.current;
+    if (s) {
+      const cs = window.getComputedStyle(s);
+      console.log("HOME computed paddingTop:", cs.paddingTop);
+      console.log("HOME computed marginTop:", cs.marginTop);
+      console.log("HOME getBoundingClientRect top:", s.getBoundingClientRect().top);
+    }
+  }, []);
 
   useEffect(() => {
     const el = glitchRef.current;
@@ -138,19 +149,16 @@ export default function HeroBlock() {
   }, []);
 
   return (
-    <section id="home" style={{
+    <section id="home" ref={sectionRef} style={{
       position: "relative",
       background: "#050505",
       overflow: "hidden",
-      paddingTop: "58px",
-      paddingLeft: "40px",
-      paddingRight: "40px",
-      paddingBottom: "80px",
+      padding: "0 40px 80px",
     }}>
       <ParticlesBg />
 
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%" }}>
+      <div style={{ position: "relative", zIndex: 3, maxWidth: 900, width: "100%", paddingTop: "58px" }}>
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
           fontSize: "0.75rem",
